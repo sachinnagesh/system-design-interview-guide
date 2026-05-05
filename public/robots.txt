@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://system-design-interview-guide.vercel.app/sitemap.xml

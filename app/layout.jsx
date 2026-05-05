@@ -1,14 +1,35 @@
 import React from 'react'
 
 export const metadata = {
-  title: 'System Design Interview Guide - HLD + LLD',
-  description: 'Complete guide covering High-Level Design, Low-Level Design, trade-offs, and real-world case studies for system design interviews.',
+  title: 'System Design Interview Guide - Master HLD & LLD | Free Course',
+  description: 'Complete system design interview guide with 14 topics, 40+ concepts with trade-offs, and 20+ real case studies from Netflix, Uber, Discord. Master both High-Level Design (HLD) and Low-Level Design (LLD) for FAANG interviews.',
+  keywords: 'system design, system design interview, HLD, LLD, interview prep, high level design, low level design, system design guide',
+  authors: [{ name: 'System Design Interview Guide' }],
   viewport: 'width=device-width, initial-scale=1',
   openGraph: {
-    title: 'System Design Interview Guide',
-    description: 'Master both HLD and LLD with real case studies and trade-offs',
+    title: 'System Design Interview Guide - Master HLD & LLD',
+    description: 'Free system design guide with real case studies, trade-offs, and interview framework. Perfect for FAANG interviews.',
     type: 'website',
+    url: 'https://system-design-interview-guide.vercel.app',
+    siteName: 'System Design Interview Guide',
   },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'System Design Interview Guide',
+    description: 'Master system design with real case studies and trade-offs',
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      'max-snippet': -1,
+      'max-image-preview': 'large',
+      'max-video-preview': -1,
+    },
+  },
+  canonical: 'https://system-design-interview-guide.vercel.app',
 }
 
 export default function RootLayout({ children }) {
