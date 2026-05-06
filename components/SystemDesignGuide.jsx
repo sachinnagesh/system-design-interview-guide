@@ -1,4 +1,6 @@
-import { useState } from "react";
+'use client'
+
+import { useState, useEffect } from "react";
 
 const topics = [
   // ============ HIGH LEVEL DESIGN ============
@@ -1403,6 +1405,14 @@ export default function SystemDesignGuide() {
   const [expandedCase, setExpandedCase] = useState(0);
   const [activeFilter, setActiveFilter] = useState("ALL");
   const [showSidebar, setShowSidebar] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   const filteredTopics = activeFilter === "ALL"
     ? topics
@@ -1458,17 +1468,6 @@ export default function SystemDesignGuide() {
         ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-track { background: #0a0a14; }
         ::-webkit-scrollbar-thumb { background: #2a2a3e; border-radius: 4px; }
-
-        @media (max-width: 768px) {
-          .sidebar-overlay { display: block !important; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 999; }
-          .mobile-menu-btn { display: block !important; }
-          .sidebar-mobile { position: fixed !important; left: 0 !important; top: 60px !important; width: 100% !important; height: calc(100% - 60px) !important; z-index: 1000 !important; }
-        }
-        
-        @media (min-width: 769px) {
-          .mobile-menu-btn { display: none !important; }
-          .sidebar-overlay { display: none !important; }
-        }
       `}</style>
 
       {/* Header */}
@@ -1490,7 +1489,6 @@ export default function SystemDesignGuide() {
           }}>System Design</h1>
         </div>
         <button
-          className="mobile-menu-btn"
           onClick={() => setShowSidebar(!showSidebar)}
           style={{
             background: "#4CC9F0",
@@ -1500,7 +1498,8 @@ export default function SystemDesignGuide() {
             borderRadius: 6,
             cursor: "pointer",
             fontWeight: 600,
-            fontSize: "0.8rem"
+            fontSize: "0.8rem",
+            display: isMobile ? "block" : "none"
           }}
         >
           {showSidebar ? "✕" : "☰ Topics"}
@@ -1508,33 +1507,44 @@ export default function SystemDesignGuide() {
       </div>
 
       {/* Overlay for mobile sidebar */}
-      {showSidebar && (
+      {isMobile && showSidebar && (
         <div
-          className="sidebar-overlay"
           onClick={() => setShowSidebar(false)}
+          style={{
+            position: "fixed",
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: 0,
+            background: "rgba(0,0,0,0.5)",
+            zIndex: 999
+          }}
         />
       )}
 
       <div style={{ display: "flex", flex: 1, width: "100%" }}>
 
         {/* Sidebar */}
-        <div className="sidebar-mobile" style={{
-          width: showSidebar ? "100%" : 240,
-          maxWidth: showSidebar ? "100%" : 240,
-          paddingTop: showSidebar ? 12 : 32,
-          paddingRight: showSidebar ? 12 : 24,
-          paddingLeft: showSidebar ? 12 : 0,
+        <div style={{
+          width: isMobile ? (showSidebar ? "85%" : 0) : 240,
+          maxWidth: isMobile ? (showSidebar ? "320px" : 0) : 240,
+          paddingTop: isMobile ? (showSidebar ? 20 : 0) : 32,
+          paddingRight: isMobile ? (showSidebar ? 16 : 0) : 24,
+          paddingLeft: isMobile ? (showSidebar ? 16 : 0) : 0,
           flexShrink: 0,
-          position: showSidebar ? "fixed" : "sticky",
-          top: showSidebar ? 0 : 0,
-          left: showSidebar ? 0 : "auto",
-          background: showSidebar ? "#0a0a14" : "transparent",
-          zIndex: showSidebar ? 1000 : "auto",
+          position: isMobile ? "fixed" : "sticky",
+          top: isMobile ? 0 : 0,
+          left: isMobile ? 0 : "auto",
+          height: isMobile ? "100vh" : "auto",
+          background: isMobile ? "#0a0a14" : "transparent",
+          zIndex: isMobile ? 1000 : "auto",
           alignSelf: "flex-start",
-          maxHeight: showSidebar ? "100vh" : "100vh",
+          maxHeight: "100vh",
           overflowY: "auto",
+          overflowX: "hidden",
           transition: "all 0.3s ease",
-          display: showSidebar ? "block" : "block"
+          visibility: isMobile && !showSidebar ? "hidden" : "visible",
+          boxShadow: isMobile && showSidebar ? "4px 0 20px rgba(0,0,0,0.5)" : "none"
         }}>
           {["HLD", "LLD", "FRAMEWORK"].map(category => {
             const catTopics = filteredTopics.filter(t => t.category === category);
@@ -1592,7 +1602,7 @@ export default function SystemDesignGuide() {
         </div>
 
         {/* Main Content */}
-        <div style={{ flex: 1, paddingTop: 32, paddingBottom: 60, minWidth: 0 }}>
+        <div style={{ flex: 1, paddingTop: isMobile ? 16 : 32, paddingBottom: isMobile ? 40 : 60, paddingLeft: isMobile ? 16 : 0, paddingRight: isMobile ? 16 : 0, minWidth: 0, width: "100%" }}>
 
           {/* Topic Header */}
           <div style={{
