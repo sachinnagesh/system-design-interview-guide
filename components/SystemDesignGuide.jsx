@@ -1402,6 +1402,7 @@ export default function SystemDesignGuide() {
   const [expandedConcept, setExpandedConcept] = useState(null);
   const [expandedCase, setExpandedCase] = useState(0);
   const [activeFilter, setActiveFilter] = useState("ALL");
+  const [showSidebar, setShowSidebar] = useState(false);
 
   const filteredTopics = activeFilter === "ALL"
     ? topics
@@ -1422,12 +1423,15 @@ export default function SystemDesignGuide() {
       color: "#e8e8f0",
       fontFamily: "'Georgia', 'Times New Roman', serif",
       display: "flex",
-      flexDirection: "column"
+      flexDirection: "column",
+      width: "100%",
+      overflow: "hidden"
     }}>
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Playfair+Display:wght@700;900&family=DM+Sans:wght@300;400;500;600&display=swap');
         
         * { box-sizing: border-box; margin: 0; padding: 0; }
+        html, body { width: 100%; overflow-x: hidden; }
         
         .topic-btn:hover { transform: translateX(4px); }
         .topic-btn { transition: all 0.2s ease; cursor: pointer; }
@@ -1454,15 +1458,62 @@ export default function SystemDesignGuide() {
         ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-track { background: #0a0a14; }
         ::-webkit-scrollbar-thumb { background: #2a2a3e; border-radius: 4px; }
+
+        @media (max-width: 768px) {
+          .sidebar-overlay { display: block !important; position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); z-index: 999; }
+          .mobile-menu-btn { display: block !important; }
+          .sidebar-mobile { position: fixed !important; left: 0 !important; top: 60px !important; width: 100% !important; height: calc(100% - 60px) !important; z-index: 1000 !important; }
+        }
+        
+        @media (min-width: 769px) {
+          .mobile-menu-btn { display: none !important; }
+          .sidebar-overlay { display: none !important; }
+        }
       `}</style>
 
       {/* Header */}
       <div style={{
-        padding: "32px 40px 24px",
+        padding: "16px 20px",
         borderBottom: "1px solid #1e1e30",
-        background: "linear-gradient(180deg, #0d0d1f 0%, #0a0a14 100%)"
+        background: "linear-gradient(180deg, #0d0d1f 0%, #0a0a14 100%)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between"
       }}>
-        <div style={{ maxWidth: 1200, margin: "0 auto" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+          <span style={{ fontSize: "1.2rem" }}>📐</span>
+          <h1 style={{
+            fontFamily: "'Playfair Display', serif",
+            fontSize: "clamp(1rem, 4vw, 1.2rem)",
+            fontWeight: 900,
+            color: "#fff"
+          }}>System Design</h1>
+        </div>
+        <button
+          className="mobile-menu-btn"
+          onClick={() => setShowSidebar(!showSidebar)}
+          style={{
+            background: "#4CC9F0",
+            border: "none",
+            color: "#0a0a14",
+            padding: "6px 12px",
+            borderRadius: 6,
+            cursor: "pointer",
+            fontWeight: 600,
+            fontSize: "0.8rem"
+          }}
+        >
+          {showSidebar ? "✕" : "☰ Topics"}
+        </button>
+      </div>
+
+      {/* Overlay for mobile sidebar */}
+      {showSidebar && (
+        <div
+          className="sidebar-overlay"
+          onClick={() => setShowSidebar(false)}
+        />
+      )}>
           <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 6 }}>
             <span style={{
               fontFamily: "'DM Mono', monospace",
@@ -1524,16 +1575,23 @@ export default function SystemDesignGuide() {
       <div style={{ display: "flex", flex: 1, maxWidth: 1200, margin: "0 auto", width: "100%", padding: "0 40px" }}>
 
         {/* Sidebar */}
-        <div style={{
-          width: 240,
-          paddingTop: 32,
-          paddingRight: 24,
+        <div className="sidebar-mobile" style={{
+          width: showSidebar ? "100%" : 240,
+          maxWidth: showSidebar ? "100%" : 240,
+          paddingTop: showSidebar ? 12 : 32,
+          paddingRight: showSidebar ? 12 : 24,
+          paddingLeft: showSidebar ? 12 : 0,
           flexShrink: 0,
-          position: "sticky",
-          top: 0,
+          position: showSidebar ? "fixed" : "sticky",
+          top: showSidebar ? 0 : 0,
+          left: showSidebar ? 0 : "auto",
+          background: showSidebar ? "#0a0a14" : "transparent",
+          zIndex: showSidebar ? 1000 : "auto",
           alignSelf: "flex-start",
-          maxHeight: "100vh",
-          overflowY: "auto"
+          maxHeight: showSidebar ? "100vh" : "100vh",
+          overflowY: "auto",
+          transition: "all 0.3s ease",
+          display: showSidebar ? "block" : "block"
         }}>
           {["HLD", "LLD", "FRAMEWORK"].map(category => {
             const catTopics = filteredTopics.filter(t => t.category === category);
