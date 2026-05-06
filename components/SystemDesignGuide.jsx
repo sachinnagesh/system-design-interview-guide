@@ -1513,66 +1513,9 @@ export default function SystemDesignGuide() {
           className="sidebar-overlay"
           onClick={() => setShowSidebar(false)}
         />
-      )}>
-          <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 6 }}>
-            <span style={{
-              fontFamily: "'DM Mono', monospace",
-              fontSize: "0.7rem",
-              color: "#4CC9F0",
-              letterSpacing: "0.2em",
-              textTransform: "uppercase"
-            }}>Complete Guide</span>
-            <div style={{ height: 1, flex: 1, background: "linear-gradient(90deg, #4CC9F0 0%, transparent 100%)" }} />
-          </div>
-          <h1 style={{
-            fontFamily: "'Playfair Display', serif",
-            fontSize: "clamp(1.8rem, 4vw, 2.8rem)",
-            fontWeight: 900,
-            color: "#fff",
-            letterSpacing: "-0.02em",
-            lineHeight: 1.1
-          }}>
-            System Design
-            <span style={{ color: "#4CC9F0" }}> HLD + LLD</span> Master Guide
-          </h1>
-          <p style={{
-            fontFamily: "'DM Sans', sans-serif",
-            color: "#606080",
-            marginTop: 8,
-            fontSize: "0.9rem"
-          }}>
-            {topics.length} topics · Every concept with trade-offs · Real case studies · Interview framework included
-          </p>
+      )}
 
-          {/* Category Filter */}
-          <div style={{ display: "flex", gap: 8, marginTop: 18, flexWrap: "wrap" }}>
-            {["ALL", "HLD", "LLD", "FRAMEWORK"].map(cat => (
-              <button
-                key={cat}
-                className="filter-btn"
-                onClick={() => setActiveFilter(cat)}
-                style={{
-                  background: activeFilter === cat
-                    ? `linear-gradient(135deg, ${cat === "ALL" ? "#4CC9F0" : categoryMeta[cat]?.color || "#4CC9F0"}30, ${cat === "ALL" ? "#4CC9F0" : categoryMeta[cat]?.color || "#4CC9F0"}10)`
-                    : "#10101e",
-                  border: `1px solid ${activeFilter === cat ? (cat === "ALL" ? "#4CC9F0" : categoryMeta[cat]?.color) + "60" : "#1e1e30"}`,
-                  color: activeFilter === cat ? (cat === "ALL" ? "#4CC9F0" : categoryMeta[cat]?.color) : "#6060a0",
-                  padding: "6px 14px",
-                  borderRadius: 20,
-                  fontFamily: "'DM Mono', monospace",
-                  fontSize: "0.7rem",
-                  letterSpacing: "0.1em",
-                  fontWeight: 500
-                }}
-              >
-                {cat === "ALL" ? "ALL TOPICS" : cat}
-              </button>
-            ))}
-          </div>
-        </div>
-      </div>
-
-      <div style={{ display: "flex", flex: 1, maxWidth: 1200, margin: "0 auto", width: "100%", padding: "0 40px" }}>
+      <div style={{ display: "flex", flex: 1, width: "100%" }}>
 
         {/* Sidebar */}
         <div className="sidebar-mobile" style={{
@@ -1619,7 +1562,7 @@ export default function SystemDesignGuide() {
                   <button
                     key={t.id}
                     className="topic-btn"
-                    onClick={() => { setActive(t.id); setExpandedConcept(null); setExpandedCase(0); }}
+                    onClick={() => { setActive(t.id); setExpandedConcept(null); setExpandedCase(0); setShowSidebar(false); }}
                     style={{
                       display: "flex",
                       alignItems: "center",
