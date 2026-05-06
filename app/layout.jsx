@@ -37,9 +37,13 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <head>
         <meta charSet="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover" />
         <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='75' font-size='75'>📐</text></svg>" />
+        <style>
+          {`html, body { width: 100%; margin: 0; padding: 0; overflow-x: hidden; }`}
+        </style>
       </head>
-      <body style={{ margin: 0, padding: 0 }}>
+      <body style={{ margin: 0, padding: 0, width: '100%', overflow: 'hidden' }}>
         {children}
       </body>
     </html>
