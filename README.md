@@ -62,7 +62,7 @@ A structured 5-step approach to answering any system design question — clarify
 ### Run Locally
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/system-design-interview-guide.git
+git clone https://github.com/sachinnagesh/system-design-interview-guide.git
 cd system-design-interview-guide
 npm install
 npm run dev
